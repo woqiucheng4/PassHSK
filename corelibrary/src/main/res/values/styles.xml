@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- 自定义首页底部按钮样式-->
+    <declare-styleable name="BottomTabView">
+
+        <attr name="tabIcon" format="reference"/>
+        <attr name="tabText" format="reference"/>
+        <attr name="tabTextSize" format="dimension"/>
+        <attr name="tabButtonTextColor" format="reference"/>
+        <attr name="tabIsSelected" format="boolean"/>
+
+    </declare-styleable>
+    <!-- 自定义首页底部按钮样式-->
+    <declare-styleable name="SwipeRecyclerViewStyle">
+        <attr name="hasFixedSize" format="boolean"/>
+        <attr name="enableLoadMore" format="boolean"/>
+        <attr name="enableRefresh" format="boolean"/>
+    </declare-styleable>
+
+</resources>
