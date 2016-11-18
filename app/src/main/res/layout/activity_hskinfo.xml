@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp">
+
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+              android:text="Chinese Proficiency Test (HSK), an international standardized test of Chinese language proficiency,assesses non-native Chinese speakers’ abilities in using the Chinese language in their daily, academic and professional lives. HSK consists of six levels, namely HSK (level I), HSK (level II), HSK (level III), HSK (level IV), HSK (level V), and HSK (level VI)."/>
+
+</RelativeLayout>

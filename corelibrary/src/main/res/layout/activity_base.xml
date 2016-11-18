@@ -50,8 +50,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:tag="navigationView"
-        app:itemIconTint="@color/colorPrimary"
-        app:itemTextColor="@color/colorPrimary"/>
+        android:tag="navigationView"/>
 
 </android.support.v4.widget.DrawerLayout>

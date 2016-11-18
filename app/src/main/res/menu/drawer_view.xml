@@ -6,18 +6,18 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_dashboard"
-            android:title="CC Talk"/>
+            android:title="about HSK"/>
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_event"
+            android:icon="@drawable/ic_dashboard"
             android:title="HJ Class"/>
         <item
             android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_headset"
+            android:icon="@drawable/ic_dashboard"
             android:title="Words"/>
         <item
             android:id="@+id/nav_discussion"
-            android:icon="@drawable/ic_forum"
+            android:icon="@drawable/ic_dashboard"
             android:title="Big HJ"/>
     </group>
 
@@ -28,7 +28,7 @@
             <item
                 android:id="@+id/about"
                 android:icon="@drawable/ic_dashboard"
-                android:title="about"/>
+                android:title="about us"/>
         </item>
     </group>
 

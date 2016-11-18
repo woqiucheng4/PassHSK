@@ -1,5 +1,6 @@
 package com.qc.hsk.view.activity;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -78,7 +79,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
-                        Toast.makeText(MainActivity.this, "home", Toast.LENGTH_LONG).show();
+                        gotoHSKInfoActivity();
                         break;
                     case R.id.about:
                         Toast.makeText(MainActivity.this, "about", Toast.LENGTH_LONG).show();
@@ -89,6 +90,10 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
                 return true;
             }
         });
+    }
+
+    private void gotoHSKInfoActivity() {
+        startActivity(new Intent(this, HSKInfoActivity.class));
     }
 
     private void initDrawerHeaderView() {
