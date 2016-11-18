@@ -9,17 +9,19 @@
               android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/portrait_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/ic_user"/>
 
     <TextView
+        android:id="@+id/portrait_name_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="XuYisheng"
+        android:text="PassHSK"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"/>
 

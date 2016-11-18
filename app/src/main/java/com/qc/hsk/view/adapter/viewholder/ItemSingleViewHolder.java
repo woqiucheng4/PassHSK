@@ -1,4 +1,4 @@
-package com.qc.hsk.adapter.viewholder;
+package com.qc.hsk.view.adapter.viewholder;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -20,12 +20,14 @@ public class ItemSingleViewHolder extends BaseViewHolder {
 
     public TextView textView;
     public TextView definitionTv;
+    public TextView pinyinTv;
     public ImageView soundImg;
 
     public ItemSingleViewHolder(View view) {
         super(view);
         textView = (TextView) view.findViewById(R.id.textTv);
         definitionTv = (TextView) view.findViewById(R.id.definitionTv);
+        pinyinTv = (TextView) view.findViewById(R.id.pinyinTv);
         soundImg = (ImageView) view.findViewById(R.id.soundImg);
     }
 }

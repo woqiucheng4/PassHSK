@@ -89,6 +89,13 @@ public class ToolBarManager {
     }
 
     /**
+     * 更改返回按钮的图标
+     */
+    public void setHomeAsUpIndicator(int drawableID) {
+        mContext.getSupportActionBar().setHomeAsUpIndicator(drawableID);
+    }
+
+    /**
      * 设置居中标题为View
      *
      * @param view

@@ -1,4 +1,4 @@
-package com.qc.hsk.adapter;
+package com.qc.hsk.view.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,7 +8,7 @@ import com.qc.corelibrary.view.adapter.BaseAdapter;
 import com.qc.corelibrary.view.adapter.OnItemClickListener;
 import com.qc.corelibrary.view.adapter.viewholder.BaseViewHolder;
 import com.qc.hsk.R;
-import com.qc.hsk.adapter.viewholder.ItemSingleViewHolder;
+import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 import com.qc.hsk.network.value.Character;
 
 import java.util.List;
@@ -64,6 +64,7 @@ public class SampleAdapter extends BaseAdapter<Character, ItemSingleViewHolder> 
     public void convert(ItemSingleViewHolder holder, Character item) {
         final ItemSingleViewHolder itemHolder = holder;
         itemHolder.textView.setText(item.getCharacterName());
+        itemHolder.pinyinTv.setText(item.getPinyin());
         itemHolder.definitionTv.setText(item.getDefinition());
         itemHolder.soundImg.setOnClickListener(new View.OnClickListener() {
             @Override

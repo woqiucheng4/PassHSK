@@ -21,15 +21,15 @@
             android:title="Big HJ"/>
     </group>
 
-    <item android:title="Version">
-        <menu>
+    <group
+        android:id="@+id/nav_about_group">
+        <item
+            android:title="about">
             <item
+                android:id="@+id/about"
                 android:icon="@drawable/ic_dashboard"
-                android:title="Android"/>
-            <item
-                android:icon="@drawable/ic_dashboard"
-                android:title="iOS"/>
-        </menu>
-    </item>
+                android:title="about"/>
+        </item>
+    </group>
 
 </menu>

@@ -18,4 +18,17 @@
         </attr>
         <attr name="clickToClose" format="boolean"/>
     </declare-styleable>
+
+    <string-array name="permissions">
+        <item>@string/permission_recode_audio_hint</item>
+        <item>@string/permission_read_contacts_hint</item>
+        <item>@string/permission_read_phone_state_hint</item>
+        <item>@string/permission_call_phone_hint</item>
+        <item>@string/permission_send_sms_hint</item>
+        <item>@string/permission_camera_hint</item>
+        <item>@string/permission_access_fine_location_hint</item>
+        <item>@string/permission_access_coarse_location_hint</item>
+        <item>@string/permission_read_external_hint</item>
+        <item>@string/permission_white_external_hint</item>
+    </string-array>
 </resources>
