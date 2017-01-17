@@ -8,8 +8,8 @@ import com.qc.corelibrary.view.adapter.BaseAdapter;
 import com.qc.corelibrary.view.adapter.OnItemClickListener;
 import com.qc.corelibrary.view.adapter.viewholder.BaseViewHolder;
 import com.qc.hsk.R;
-import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 import com.qc.hsk.network.value.Character;
+import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 
 import java.util.List;
 

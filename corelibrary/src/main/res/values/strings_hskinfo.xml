@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hskinfo_content_english">
+        &#160; &#160; Chinese Proficiency Test (HSK), an international standardized test of Chinese language
+        proficiency,assesses non-native Chinese speakers’ abilities in using the Chinese language in their daily,
+        academic
+        and professional lives.\n
+        &#160; &#160; HSK consists of six levels, namely HSK (level I), HSK (level II), HSK (level III), HSK (level IV),
+        HSK
+        (level V), and HSK (level VI).
+    </string>
+</resources>

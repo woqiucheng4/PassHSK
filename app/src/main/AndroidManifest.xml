@@ -29,6 +29,10 @@
         </activity>
         <activity android:name=".view.activity.HSKInfoActivity">
         </activity>
+
+        <service
+            android:name=".tinker.service.SampleResultService"
+            android:exported="false"/>
     </application>
 
 </manifest>
