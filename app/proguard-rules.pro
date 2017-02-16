@@ -22,10 +22,8 @@
 -verbose                                                                        # 混淆时是否记录日志
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*        # 混淆时所采用的算法
 
-#重要，別忘了這些，不混淆andfix包，不混淆native方法
+#重要，別忘了這些，不混淆native方法
 -dontwarn android.annotation
--dontwarn com.alipay.euler.**
--keep class com.alipay.euler.** {*;}
 -keep class * extends java.lang.annotation.Annotation
 -keepclasseswithmembernames class * {
     native <methods>;

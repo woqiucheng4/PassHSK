@@ -3,6 +3,7 @@ package com.qc.hsk.view.activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.view.MenuItem;
@@ -11,25 +12,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.qc.corelibrary.network.BaseHttpPresenter;
-import com.qc.corelibrary.network.InvokerCallBack;
 import com.qc.corelibrary.utils.PermissionUtils;
 import com.qc.corelibrary.view.BaseActivity;
 import com.qc.corelibrary.view.widget.SwipeRecyclerView;
 import com.qc.hsk.R;
-import com.qc.hsk.network.HttpInterface;
-import com.qc.hsk.network.HttpPresenter;
 import com.qc.hsk.network.bean.CharacterListBean;
-import com.qc.hsk.network.bean.VersionBean;
 import com.qc.hsk.network.value.Character;
-import com.qc.hsk.network.value.Version;
 import com.qc.hsk.speech.SpeechManager;
-import com.qc.hsk.view.adapter.SampleAdapter;
+import com.qc.hsk.utils.FileUtils;
+import com.qc.hsk.view.activity.about.HSKInfoActivity;
+import com.qc.hsk.view.adapter.WordAdapter;
+import com.tencent.tinker.lib.tinker.TinkerInstaller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements SwipeRecyclerView.RefreshLoadMoreListener, SampleAdapter.OnSpeekListener {
+public class MainActivity extends BaseActivity implements SwipeRecyclerView.RefreshLoadMoreListener, WordAdapter.OnSpeekListener {
+
+    private static final String WORD_LIST_NAME = "word_json.txt";
+
+    private String sdCardWordPath;
 
     private SpeechManager speechManager;
 
@@ -37,7 +40,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
 
     private List<Character> list = new ArrayList<>();
 
-    private SampleAdapter adapter;
+    private WordAdapter adapter;
 
 
     @Override
@@ -49,10 +52,8 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
 
     @Override
     protected void initCustomView() {
-        PermissionUtils.requestPermission(MainActivity.this,//
-                PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE, MainActivity.this);
         mSwipeRecyclerView = (SwipeRecyclerView) findViewById(R.id.swipeRecyclerView);
-        adapter = new SampleAdapter(this, list);
+        adapter = new WordAdapter(this, list);
         mSwipeRecyclerView.setAdapter(adapter);
         //        mSwipeRecyclerView.setDistanceToTriggerSync(500);
         mSwipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -61,6 +62,8 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         setHomeAsUpIndicator(R.drawable.ic_menu);
         setShowDrawerLayout(true);
         initNavigationView();
+        PermissionUtils.requestPermission(MainActivity.this,//
+                PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE, MainActivity.this);
 
     }
 
@@ -82,7 +85,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
                         gotoHSKInfoActivity();
                         break;
                     case R.id.about:
-                        Toast.makeText(MainActivity.this, "about", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "about hsk", Toast.LENGTH_LONG).show();
                         break;
                 }
                 menuItem.setChecked(true);
@@ -101,70 +104,32 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         headerView.findViewById(R.id.portrait_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "头像", Toast.LENGTH_LONG).show();
+                TinkerInstaller.onReceiveUpgradePatch(getApplicationContext(),//
+                        Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "patch_signed_7zip.apk");
+                //                Toast.makeText(MainActivity.this, "头像", Toast.LENGTH_LONG).show();
             }
         });
         headerView.findViewById(R.id.portrait_name_txt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "姓名", Toast.LENGTH_LONG).show();
+                //                Toast.makeText(MainActivity.this, "姓名", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Tinker", Toast.LENGTH_LONG).show();
             }
         });
     }
 
 
     /**
-     * 请求强制更新参数
+     * 请求单词列表
      *
      * @throws Exception
      */
-    private void requestVersionUpdateInfo() throws Exception {
-        final BaseHttpPresenter<String> presenter = HttpPresenter.getInstance().setShowLoading(false).setShowPromptDialog(false);
-        Object[] params = new Object[]{};
-        InvokerCallBack<String> callback = new InvokerCallBack<String>() {
-            @Override
-            public void notifySuccess(String result) {
-                VersionBean versionBean = JSON.parseObject(result, VersionBean.class);
-                if (versionBean != null && versionBean.getValue() != null) {
-                    Version mVersion = versionBean.getValue();
-                }
-            }
-
-            @Override
-            public void notifyFailed(int code, String errorMessage) {
-            }
-        };
-        presenter.setShowLoading(true).setShowPromptDialog(true).loadDatas(this,//
-                HttpInterface.getVersionInfoURL(), //
-                null, //
-                callback, params);
-    }
-
-    /**
-     * 请求强制更新参数
-     *
-     * @throws Exception
-     */
-    private void requestHSKCharacters() throws Exception {
-        final BaseHttpPresenter<String> presenter = HttpPresenter.getInstance().setShowLoading(false).setShowPromptDialog(false);
-        Object[] params = new Object[]{};
-        InvokerCallBack<String> callback = new InvokerCallBack<String>() {
-            @Override
-            public void notifySuccess(String result) {
-                CharacterListBean characterListBean = JSON.parseObject(result, CharacterListBean.class);
-                if (characterListBean != null && characterListBean.getValue() != null)
-                    list.addAll(characterListBean.getValue().getCharacterList());
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void notifyFailed(int code, String errorMessage) {
-            }
-        };
-        presenter.setShowLoading(true).setShowPromptDialog(true).loadDatas(this,//
-                HttpInterface.getHSKOneURL(), //
-                null, //
-                callback, params);
+    private void requestHSKCharacters() {
+        String jsonWord = FileUtils.readFile(sdCardWordPath, "utf-8").toString();
+        CharacterListBean characterListBean = JSON.parseObject(jsonWord, CharacterListBean.class);
+        if (characterListBean != null && characterListBean.getValue() != null)
+            list.addAll(characterListBean.getValue().getCharacterList());
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -187,12 +152,10 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
     public void onPermissionGranted(int requestCode) {
         switch (requestCode) {
             case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
+                sdCardWordPath = Environment.getExternalStorageDirectory() + File.separator + WORD_LIST_NAME;
+                FileUtils.copyFromAssetsToSdcard(this, true, WORD_LIST_NAME, sdCardWordPath);
                 speechManager = new SpeechManager(this);
-                try {
-                    requestHSKCharacters();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                requestHSKCharacters();
                 break;
             default:
                 break;

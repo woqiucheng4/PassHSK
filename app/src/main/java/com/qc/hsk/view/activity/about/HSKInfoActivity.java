@@ -1,4 +1,4 @@
-package com.qc.hsk.view.activity;
+package com.qc.hsk.view.activity.about;
 
 import android.os.Bundle;
 

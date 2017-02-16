@@ -75,6 +75,7 @@ public class SampleResultService extends DefaultTinkerResultService {
             }
             //not like TinkerResultService, I want to restart just when I am at background!
             //if you have not install tinker this moment, you can use TinkerApplicationHelper api
+            TinkerLog.i(TAG, "patchVersion is: %s", result.patchVersion);
             if (checkIfNeedKill(result)) {
                 if (Utils.isBackground()) {
                     TinkerLog.i(TAG, "it is in background, just restart process");

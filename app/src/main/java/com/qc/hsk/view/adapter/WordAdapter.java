@@ -1,6 +1,7 @@
 package com.qc.hsk.view.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,17 +17,17 @@ import java.util.List;
 
 /**
  * <ul>
- * <li>功能职责：</li>
+ * <li>功能职责：单词adapter</li>
  * </ul>
  *
  * @author chengqiu
  * @date 2016-08-26
  */
-public class SampleAdapter extends BaseAdapter<Character, ItemSingleViewHolder> implements OnItemClickListener {
+public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> implements OnItemClickListener {
 
     private OnSpeekListener speekListener;
 
-    public SampleAdapter(Context context, List<Character> list) {
+    public WordAdapter(Context context, List<Character> list) {
         super(context, list);
         speekListener = (OnSpeekListener) context;
     }

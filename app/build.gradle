@@ -95,21 +95,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            //多渠道打包配置
-//            applicationVariants.all { variant ->
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        // 输出apk名称为test_v1.0_2016-08-15_wandoujia.apk
-//                        def fileName = "test_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-//                        output.outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
-//            }
         }
         debug {
             debuggable true
@@ -122,15 +111,6 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-
-    // 渠道配置
-    productFlavors {
-        wandoujia {}
-        _360 {}
-        baidu {}
-        xiaomi {}
-    }
-
 }
 
 def bakPath = file("${buildDir}/bakApk/")
@@ -146,7 +126,7 @@ ext {
 
     //for normal build
     //old apk file to build patch apk
-    tinkerOldApkPath = "${bakPath}/sample-okhttp-release-0116-18-30-48.apk"
+    tinkerOldApkPath = "${bakPath}/app-release-0118-15-40-19.apk"
     //resource R.txt to build patch apk, must input if there is resource changed
     tinkerApplyResourcePath = "${bakPath}/sample-okhttp-release-0116-16-46-12-R.txt"
 

@@ -29,6 +29,7 @@ import com.tencent.tinker.loader.shareutil.ShareConstants;
  * @author chengqiu
  * @date 2016-11-08
  */
+@SuppressWarnings("unused")
 @DefaultLifeCycle(application = "com.qc.hsk.HSKApplication",
         flags = ShareConstants.TINKER_ENABLE_ALL,
         loadVerifyFlag = false)
@@ -68,7 +69,6 @@ public class TinkerApplication extends DefaultApplicationLike {
         //or you can put com.tencent.tinker.** to main dex
         TinkerManager.installTinker(this);
         Tinker tinker = Tinker.with(getApplication());
-
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
