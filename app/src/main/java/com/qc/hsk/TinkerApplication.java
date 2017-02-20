@@ -15,6 +15,8 @@ import com.qc.corelibrary.utils.network.NetworkUtils;
 import com.qc.hsk.tinker.Log.MyLogImp;
 import com.qc.hsk.tinker.util.SampleApplicationContext;
 import com.qc.hsk.tinker.util.TinkerManager;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.tinker.anno.DefaultLifeCycle;
 import com.tencent.tinker.lib.tinker.Tinker;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
@@ -36,8 +38,7 @@ import com.tencent.tinker.loader.shareutil.ShareConstants;
 public class TinkerApplication extends DefaultApplicationLike {
     private static final String TAG = "Tinker.TinkerApplication";
 
-    public TinkerApplication(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag,
-                             long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
+    public TinkerApplication(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
         super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
     }
 
@@ -79,8 +80,21 @@ public class TinkerApplication extends DefaultApplicationLike {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (!LeakCanary.isInAnalyzerProcess(getApplication())) {
+            refWatcher = LeakCanary.install(getApplication());
+        }
         CatchCrash.getInstance().init(getApplication());
-        NetWorkStateReceiver.registerObserver(taNetChangeObserver);
+        mNetWorkStateReceiver = new NetWorkStateReceiver();
+        mNetWorkStateReceiver.registerObserver(taNetChangeObserver);
+    }
+
+
+    private NetWorkStateReceiver mNetWorkStateReceiver;
+
+    private static RefWatcher refWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+        return refWatcher;
     }
 
     NetWorkChangeObserver taNetChangeObserver = new NetWorkChangeObserver() {

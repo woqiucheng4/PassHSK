@@ -20,6 +20,7 @@ import com.qc.hsk.network.bean.CharacterListBean;
 import com.qc.hsk.network.value.Character;
 import com.qc.hsk.speech.SpeechManager;
 import com.qc.hsk.utils.FileUtils;
+import com.qc.hsk.view.activity.about.AboutUsActivity;
 import com.qc.hsk.view.activity.about.HSKInfoActivity;
 import com.qc.hsk.view.adapter.WordAdapter;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
@@ -85,7 +86,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
                         gotoHSKInfoActivity();
                         break;
                     case R.id.about:
-                        Toast.makeText(MainActivity.this, "about hsk", Toast.LENGTH_LONG).show();
+                        gotoAboutUsActivity();
                         break;
                 }
                 menuItem.setChecked(true);
@@ -97,6 +98,10 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
 
     private void gotoHSKInfoActivity() {
         startActivity(new Intent(this, HSKInfoActivity.class));
+    }
+
+    private void gotoAboutUsActivity() {
+        startActivity(new Intent(this, AboutUsActivity.class));
     }
 
     private void initDrawerHeaderView() {

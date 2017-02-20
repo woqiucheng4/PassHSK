@@ -19,6 +19,15 @@
         <attr name="clickToClose" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="GifView">
+        <attr name="gif" format="reference"/>
+        <attr name="paused" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomTheme">
+        <attr name="gifViewStyle" format="reference"/>
+    </declare-styleable>
+
     <string-array name="permissions">
         <item>@string/permission_recode_audio_hint</item>
         <item>@string/permission_read_contacts_hint</item>

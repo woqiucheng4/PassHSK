@@ -27,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.about.AboutUsActivity">
+        </activity>
         <activity android:name=".view.activity.about.HSKInfoActivity">
         </activity>
         <activity android:name=".view.activity.word.WordDetailActivity">

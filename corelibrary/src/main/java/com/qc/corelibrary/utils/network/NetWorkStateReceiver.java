@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * @date 2016-08-08
  */
 public class NetWorkStateReceiver extends BroadcastReceiver {
-    private static Boolean networkAvailable = false;
-    private static NetworkUtils.NetType netType;
-    private static ArrayList<NetWorkChangeObserver> netChangeObserverArrayList = new ArrayList<>();
+    private  Boolean networkAvailable = false;
+    private  NetworkUtils.NetType netType;
+    private  ArrayList<NetWorkChangeObserver> netChangeObserverArrayList = new ArrayList<>();
     private final static String ANDROID_NET_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
-    private static BroadcastReceiver receiver;
+    private BroadcastReceiver receiver;
 
-    private static BroadcastReceiver getReceiver() {
+    private BroadcastReceiver getReceiver() {
         if (receiver == null) {
             receiver = new NetWorkStateReceiver();
         }
@@ -48,7 +48,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      *
      * @param mContext
      */
-    public static void registerNetworkStateReceiver(Context mContext) {
+    public void registerNetworkStateReceiver(Context mContext) {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ANDROID_NET_CHANGE_ACTION);
         mContext.registerReceiver(getReceiver(), filter);
@@ -60,7 +60,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      *
      * @param mContext
      */
-    public static void unRegisterNetworkStateReceiver(Context mContext) {
+    public void unRegisterNetworkStateReceiver(Context mContext) {
         if (receiver != null) {
             try {
                 mContext.unregisterReceiver(receiver);
@@ -74,11 +74,11 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      *
      * @return
      */
-    public static Boolean isNetworkAvailable() {
+    public Boolean isNetworkAvailable() {
         return networkAvailable;
     }
 
-    public static NetworkUtils.NetType getAPNType() {
+    public NetworkUtils.NetType getAPNType() {
         return netType;
     }
 
@@ -100,7 +100,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      *
      * @param observer
      */
-    public static void registerObserver(NetWorkChangeObserver observer) {
+    public void registerObserver(NetWorkChangeObserver observer) {
         if (netChangeObserverArrayList == null) {
             netChangeObserverArrayList = new ArrayList<NetWorkChangeObserver>();
         }
@@ -112,7 +112,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      *
      * @param observer
      */
-    public static void removeRegisterObserver(NetWorkChangeObserver observer) {
+    public void removeRegisterObserver(NetWorkChangeObserver observer) {
         if (netChangeObserverArrayList != null) {
             netChangeObserverArrayList.remove(observer);
         }

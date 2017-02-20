@@ -17,4 +17,6 @@
         <attr name="enableRefresh" format="boolean"/>
     </declare-styleable>
 
+    <style name="Widget.GifView" parent="@android:style/Widget"/>
+
 </resources>

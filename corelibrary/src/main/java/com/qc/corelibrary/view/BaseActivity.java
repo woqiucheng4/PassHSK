@@ -28,7 +28,7 @@ import com.qc.corelibrary.view.widget.ExceptionView;
 import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, PermissionUtils.PermissionGrant,ExceptionView.OnExceptionViewClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback, PermissionUtils.PermissionGrant, ExceptionView.OnExceptionViewClickListener {
 
     /**
      * 标题栏布局Tag
@@ -81,21 +81,25 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
      */
     private boolean isShowDrawerLayout = false;
 
+    private NetWorkStateReceiver mNetWorkStateReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mNetWorkStateReceiver = new NetWorkStateReceiver();
         rootView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_base, null);
         mToolbar = (Toolbar) rootView.findViewWithTag(TAG_TOOLBAR);
         mDrawerLayout = (DrawerLayout) rootView.findViewWithTag(TAG_DRAWER_LAYOUT);
         mNavigationView = (NavigationView) rootView.findViewWithTag(TAG_NAVIGATIONVIEW);
         mContentLayout = (FrameLayout) rootView.findViewWithTag(TAG_CONTENT_LAYOUT);
-        NetWorkStateReceiver.registerNetworkStateReceiver(this);
+        mNetWorkStateReceiver.registerNetworkStateReceiver(this);
         ActivitUtils.getInstance().pushActivity(this);
     }
 
     @Override
     protected void onDestroy() {
-        NetWorkStateReceiver.unRegisterNetworkStateReceiver(this);
+        mNetWorkStateReceiver.unRegisterNetworkStateReceiver(this);
+        ActivitUtils.getInstance().popActivity(this);
         super.onDestroy();
     }
 
