@@ -8,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -22,8 +21,9 @@ import com.qc.hsk.speech.SpeechManager;
 import com.qc.hsk.utils.FileUtils;
 import com.qc.hsk.view.activity.about.AboutUsActivity;
 import com.qc.hsk.view.activity.about.HSKInfoActivity;
+import com.qc.hsk.view.activity.setting.SettingActivity;
 import com.qc.hsk.view.adapter.WordAdapter;
-import com.tencent.tinker.lib.tinker.TinkerInstaller;
+import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,12 +60,11 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         mSwipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //        mSwipeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mSwipeRecyclerView.setRefreshLoadMoreListener(this);
-        setHomeAsUpIndicator(R.drawable.ic_menu);
+        setHomeAsUpIndicator(android.R.drawable.ic_menu_add);
         setShowDrawerLayout(true);
         initNavigationView();
         PermissionUtils.requestPermission(MainActivity.this,//
                 PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE, MainActivity.this);
-
     }
 
     private void initNavigationView() {
@@ -88,6 +87,9 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
                     case R.id.about:
                         gotoAboutUsActivity();
                         break;
+                    case R.id.setting:
+                        gotoSettingActivity();
+                        break;
                 }
                 menuItem.setChecked(true);
                 closeDrawerLayout();
@@ -100,6 +102,10 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         startActivity(new Intent(this, HSKInfoActivity.class));
     }
 
+    private void gotoSettingActivity() {
+        startActivity(new Intent(this, SettingActivity.class));
+    }
+
     private void gotoAboutUsActivity() {
         startActivity(new Intent(this, AboutUsActivity.class));
     }
@@ -109,16 +115,13 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         headerView.findViewById(R.id.portrait_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TinkerInstaller.onReceiveUpgradePatch(getApplicationContext(),//
-                        Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "patch_signed_7zip.apk");
-                //                Toast.makeText(MainActivity.this, "头像", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "头像", Toast.LENGTH_LONG).show();
             }
         });
         headerView.findViewById(R.id.portrait_name_txt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //                Toast.makeText(MainActivity.this, "姓名", Toast.LENGTH_LONG).show();
-                Toast.makeText(MainActivity.this, "Tinker", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "姓名", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -148,8 +151,8 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
     }
 
     @Override
-    public void onSpeek(View view) {
-        String context = ((TextView) view).getText().toString();
+    public void onSpeek(ItemSingleViewHolder itemHolder) {
+        String context = itemHolder.textView.getText().toString();
         speechManager.speak(context);
     }
 

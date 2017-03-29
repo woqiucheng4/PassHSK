@@ -1,15 +1,15 @@
 package com.qc.hsk.view.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.qc.corelibrary.view.adapter.BaseAdapter;
 import com.qc.corelibrary.view.adapter.OnItemClickListener;
 import com.qc.corelibrary.view.adapter.viewholder.BaseViewHolder;
 import com.qc.hsk.R;
 import com.qc.hsk.network.value.Character;
+import com.qc.hsk.view.activity.word.WordDetailActivity;
 import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 
 import java.util.List;
@@ -27,8 +27,11 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
 
     private OnSpeekListener speekListener;
 
+    private Context mContext;
+
     public WordAdapter(Context context, List<Character> list) {
         super(context, list);
+        mContext=context;
         speekListener = (OnSpeekListener) context;
     }
 
@@ -70,7 +73,7 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
         itemHolder.soundImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                speekListener.onSpeek(itemHolder.textView);
+                speekListener.onSpeek(itemHolder);
             }
         });
         setOnItemClickListener(this);
@@ -90,7 +93,8 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(context, "跳转到详情", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(mContext, WordDetailActivity.class);
+        mContext.startActivity(intent);
     }
 
     /**
@@ -98,7 +102,7 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
      */
     public interface OnSpeekListener {
 
-        void onSpeek(View view);
+        void onSpeek(ItemSingleViewHolder itemHolder);
 
     }
 

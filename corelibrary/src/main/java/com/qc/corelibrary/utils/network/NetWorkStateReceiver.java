@@ -20,9 +20,9 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
     private  NetworkUtils.NetType netType;
     private  ArrayList<NetWorkChangeObserver> netChangeObserverArrayList = new ArrayList<>();
     private final static String ANDROID_NET_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
-    private BroadcastReceiver receiver;
+    private static NetWorkStateReceiver receiver;
 
-    private BroadcastReceiver getReceiver() {
+    public static NetWorkStateReceiver getReceiver() {
         if (receiver == null) {
             receiver = new NetWorkStateReceiver();
         }
@@ -102,7 +102,7 @@ public class NetWorkStateReceiver extends BroadcastReceiver {
      */
     public void registerObserver(NetWorkChangeObserver observer) {
         if (netChangeObserverArrayList == null) {
-            netChangeObserverArrayList = new ArrayList<NetWorkChangeObserver>();
+            netChangeObserverArrayList = new ArrayList<>();
         }
         netChangeObserverArrayList.add(observer);
     }

@@ -8,6 +8,9 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 
+import static com.baidu.tts.client.SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85;
+import static com.baidu.tts.client.SpeechSynthesizer.AUDIO_ENCODE_AMR;
+import static com.baidu.tts.client.SpeechSynthesizer.MIX_MODE_DEFAULT;
 import static com.qc.hsk.utils.FileUtils.copyFromAssetsToSdcard;
 import static com.qc.hsk.utils.FileUtils.makeDir;
 
@@ -21,14 +24,20 @@ import static com.qc.hsk.utils.FileUtils.makeDir;
  */
 public class SpeechManager implements SpeechSynthesizerListener {
 
-    private static final String BAIDU_SPEECH_APPID="8876475";
-    private static final String BAIDU_SPEECH_APP_KEY="UHDbLtGHjKc4aztGs7B9S8Xw";
-    private static final String BAIDU_SPEECH_SECRET_KEY="f3421791936c81737a9af280dc3431c9";
+    private static final String BAIDU_SPEECH_APPID = "8876475";
+    private static final String BAIDU_SPEECH_APP_KEY = "UHDbLtGHjKc4aztGs7B9S8Xw";
+    private static final String BAIDU_SPEECH_SECRET_KEY = "f3421791936c81737a9af280dc3431c9";
 
     private static final String SAMPLE_DIR_NAME = "hskTTS";
     private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
     private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
     private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+
+    private static final String SPEECH_PARAM_VOLUME_DEfAUlT = "5";//中级音量，范围[ 0- 9]
+    private static final String SPEECH_PARAM_SPEED_DEfAUlT = "0";// 中速，范围[ 0- 9]
+    private static final String SPEECH_PARAM_PITCH_DEfAUlT = "5";//中调，范围[ 0- 9]
+    private static final String SPEECH_PARAM_SPEAKER_DEfAUlT = "0"; //0 (普通女声),1 (普通男声),2 (特别男声),3 (情感男声)
+
 
     private Context mContext;
 
@@ -74,9 +83,25 @@ public class SpeechManager implements SpeechSynthesizerListener {
         // 语音开发者平台注册应用得到的apikey和secretkey (在线授权)
         mSpeechSynthesizer.setApiKey(BAIDU_SPEECH_APP_KEY, BAIDU_SPEECH_SECRET_KEY);
         // 文本模型文件路径 (离线引擎使用)
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
         // 声学模型文件路径 (离线引擎使用)
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+        //中级音量，范围[ 0- 9]
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, SPEECH_PARAM_VOLUME_DEfAUlT);
+        //中速，范围[ 0- 9]
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, SPEECH_PARAM_SPEED_DEfAUlT);
+        //中调，范围[ 0- 9]
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, SPEECH_PARAM_PITCH_DEfAUlT);
+        //0 (普通女声),1 (普通男声),2 (特别男声),3 (情感男声)
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, SPEECH_PARAM_SPEAKER_DEfAUlT);
+        //合成模式
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, MIX_MODE_DEFAULT);
+        //在线合成参数
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE, AUDIO_ENCODE_AMR);
+        //在线合成参数
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE, AUDIO_BITRATE_AMR_15K85);
+        //离线合成参数
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOCODER_OPTIM_LEVEL, "0");
         // 初始化语音合成器
         mSpeechSynthesizer.initTts(TtsMode.MIX);
     }

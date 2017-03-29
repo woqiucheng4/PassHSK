@@ -1,6 +1,8 @@
 package com.qc.corelibrary.view;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.qc.corelibrary.R;
@@ -35,6 +38,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
      */
     private static final String TAG_TOOLBAR = "toolbar";
     /**
+     * 标题图片布局Tag
+     */
+    private static final String TAG_BACKDROP = "backdrop";
+    /**
      * 抽屉布局Tag
      */
     private static final String TAG_DRAWER_LAYOUT = "drawerLayout";
@@ -51,6 +58,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
      * 标题栏Toolbar
      */
     private Toolbar mToolbar;
+    /**
+     * 标题图片ImageView
+     */
+    private ImageView mBackdrop;
     /**
      * 抽屉栏DrawerLayout
      */
@@ -83,13 +94,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
 
     private NetWorkStateReceiver mNetWorkStateReceiver;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNetWorkStateReceiver = new NetWorkStateReceiver();
         rootView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_base, null);
         mToolbar = (Toolbar) rootView.findViewWithTag(TAG_TOOLBAR);
-        mDrawerLayout = (DrawerLayout) rootView.findViewWithTag(TAG_DRAWER_LAYOUT);
+        mBackdrop = (ImageView) rootView.findViewWithTag(TAG_BACKDROP);
+        mDrawerLayout=(DrawerLayout)rootView.findViewWithTag(TAG_DRAWER_LAYOUT);
+        setDrawerLayoutCanSlide(false);
         mNavigationView = (NavigationView) rootView.findViewWithTag(TAG_NAVIGATIONVIEW);
         mContentLayout = (FrameLayout) rootView.findViewWithTag(TAG_CONTENT_LAYOUT);
         mNetWorkStateReceiver.registerNetworkStateReceiver(this);
@@ -106,13 +120,19 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        View contentView = LayoutInflater.from(this).inflate(layoutResID, null);
-        mContentLayout.addView(contentView);
+        View contentView = LayoutInflater.from(this).inflate(layoutResID, mContentLayout,true);
+//        mContentLayout.addView(contentView);
         setContentView(rootView);
         ButterKnife.bind(this, rootView);
         initToolbarView();
         initExceptionView();
         initCustomView();
+    }
+
+    public void setDrawerLayoutCanSlide(boolean canSlide){
+        if(mDrawerLayout!=null) {
+            mDrawerLayout.setDrawerLockMode(canSlide?DrawerLayout.LOCK_MODE_LOCKED_OPEN:DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 
     /**
@@ -179,7 +199,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     }
 
     /**
-     * 设置居中标题
+     * 设置标题位置
+     *
+     * @param gravity
+     */
+    public void setTitleViewGravity(int gravity) {
+        mToolbarManager.setTitleViewGravity(gravity);
+    }
+
+    /**
+     * 设置标题内容
      *
      * @param text
      */
@@ -188,14 +217,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     }
 
     /**
-     * 设置居中标题内容
+     * 设置标题内容
      *
      * @param textID
      */
     public void setTitleText(int textID) {
         mToolbarManager.setTitleText(textID);
     }
-
 
     /**
      * 隐藏toolBar
@@ -211,6 +239,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         mToolbarManager.showTitleBar();
     }
 
+
+    /**
+     * 隐藏toolBar iamgeiView
+     */
+    public void hideTitleBarImageView() {
+        mBackdrop.setVisibility(View.GONE);
+    }
+
+    /**
+     * 显示toolBar ImageView
+     */
+    public void showTitleBarImageView() {
+        mBackdrop.setVisibility(View.VISIBLE);
+    }
+
     /**
      * 设置
      */
@@ -219,7 +262,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     }
 
     /**
-     * 设置居中标题为View
+     * 设置标题为View
      *
      * @param view
      */

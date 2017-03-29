@@ -20,23 +20,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.MainActivity">
+        <activity android:name=".view.activity.MainActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.about.AboutUsActivity">
+        <activity android:name=".view.activity.about.AboutUsActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".view.activity.about.HSKInfoActivity">
+        <activity android:name=".view.activity.setting.SettingActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".view.activity.word.WordDetailActivity">
+        <activity android:name=".view.activity.about.HSKInfoActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".view.activity.word.WordDetailActivity"
+                  android:screenOrientation="portrait">
         </activity>
 
-        <service
-            android:name=".tinker.service.SampleResultService"
-            android:exported="false"/>
     </application>
 
 </manifest>

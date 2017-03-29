@@ -8,8 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.qc.corelibrary.R;
-
 
 /**
  * <ul>
@@ -27,14 +25,21 @@ public class ToolBarManager {
 
     private TextView titleTextView;
 
+    private int mGravity;
+
     public ToolBarManager(AppCompatActivity context, Toolbar toolbar) {
         mContext = context;
         mToolbar = toolbar;
         mToolbar.setTitle("");
         mContext.setSupportActionBar(mToolbar);
+        mGravity = Gravity.LEFT;
         ActionBar ab = mContext.getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        ab.setHomeAsUpIndicator(android.R.drawable.ic_btn_speak_now);
         ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setTitleViewGravity(int gravity) {
+        mGravity=gravity;
     }
 
     /**
@@ -48,7 +53,7 @@ public class ToolBarManager {
         } else {
             titleTextView = new TextView(mContext);
             Toolbar.LayoutParams lp = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
-            lp.gravity = Gravity.CENTER;
+            lp.gravity = mGravity;
             titleTextView.setLayoutParams(lp);
             titleTextView.setTextColor(mContext.getResources().getColor(android.R.color.white));
             titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -65,7 +70,7 @@ public class ToolBarManager {
     public void setTitleText(int textID) {
         TextView titleTextView = new TextView(mContext);
         Toolbar.LayoutParams lp = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
+        lp.gravity = mGravity;
         titleTextView.setLayoutParams(lp);
         titleTextView.setTextColor(mContext.getResources().getColor(android.R.color.white));
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -102,7 +107,7 @@ public class ToolBarManager {
      */
     public void setTitleView(View view) {
         Toolbar.LayoutParams lp = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
+        lp.gravity = mGravity;
         view.setLayoutParams(lp);
         mToolbar.addView(view);
     }
