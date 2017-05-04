@@ -13,7 +13,7 @@ public class WordDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_detail);
-        showTitleBarImageView();
+        showCollapsingTitleBarImageView();
         CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbarLayout.setTitle("我的课程");
         //通过CollapsingToolbarLayout修改字体颜色

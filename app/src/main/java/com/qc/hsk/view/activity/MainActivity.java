@@ -56,11 +56,11 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         mSwipeRecyclerView = (SwipeRecyclerView) findViewById(R.id.swipeRecyclerView);
         adapter = new WordAdapter(this, list);
         mSwipeRecyclerView.setAdapter(adapter);
-        //        mSwipeRecyclerView.setDistanceToTriggerSync(500);
+        mSwipeRecyclerView.setDistanceToTriggerSync(500);
         mSwipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
         //        mSwipeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mSwipeRecyclerView.setRefreshLoadMoreListener(this);
-        setHomeAsUpIndicator(android.R.drawable.ic_menu_add);
+        setHomeAsUpIndicator(R.drawable.ic_menu);
         setShowDrawerLayout(true);
         initNavigationView();
         PermissionUtils.requestPermission(MainActivity.this,//
@@ -82,6 +82,9 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
+                        gotoHSKInfoActivity();
+                        break;
+                    case R.id.nav_messages:
                         gotoHSKInfoActivity();
                         break;
                     case R.id.about:

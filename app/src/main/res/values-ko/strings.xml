@@ -1,5 +1,3 @@
 <resources>
-    <!--App Strings-->
     <string name="app_name">HSK</string>
-    <!--MainActivity Strings-->
 </resources>

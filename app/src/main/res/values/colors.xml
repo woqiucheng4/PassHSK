@@ -8,4 +8,25 @@
     <color name="orange">#FFBA27</color>
     <color name="color_blue">#528ecb</color>
     <color name="color_green">#528ecb</color>
+    <!-- V3.0新规范-->
+    <color name="color1">#1e76ec</color>
+    <color name="color2">#2995fa</color>
+    <color name="color3">#fa6565</color>
+    <color name="color4">#ffa63d</color>
+    <color name="color5">#191919</color>
+    <color name="color6">#636363</color>
+    <color name="color7">#c6c7c9</color>
+    <color name="color8">#e2e2e2</color>
+    <color name="color9">#f0f0f0</color>
+    <color name="color10">#ebebeb</color>
+    <color name="color11">#888888</color>
+    <color name="color12">#fafafa</color>
+    <color name="color13">#ffffff</color>
+    <!-- 其他颜色-->
+    <color name="color_ffdb84">#ffdb84</color>
+    <color name="color_1a6ddc">#1a6ddc</color>
+    <color name="color_7ad77d">#7ad77d</color>
+    <color name="transparent">#00000000</color>
+    <color name="color1_transparent_45">#731e76ec</color>
+    <color name="black_transparent">#d0000000</color>
 </resources>

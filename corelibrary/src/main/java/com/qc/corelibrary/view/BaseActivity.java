@@ -243,14 +243,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     /**
      * 隐藏toolBar iamgeiView
      */
-    public void hideTitleBarImageView() {
+    public void hideCollapsingTitleBarImageView() {
         mBackdrop.setVisibility(View.GONE);
     }
 
     /**
      * 显示toolBar ImageView
      */
-    public void showTitleBarImageView() {
+    public void showCollapsingTitleBarImageView() {
         mBackdrop.setVisibility(View.VISIBLE);
     }
 

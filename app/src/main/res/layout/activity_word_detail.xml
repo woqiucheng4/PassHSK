@@ -10,12 +10,45 @@
         android:orientation="vertical"
     >
 
-        <com.qc.hsk.view.widget.AutoLineTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:lineSpacingExtra="5dp"
-            android:text="@string/hskinfo_content_english"
+            android:text="ài volume_down
+to love
+affection
+to be fond of
+to like
+HSK LEVELS
+
+HSK 1
+HSK 3
+HSK 4
+HSK 5
+HSK 6
+COMPONENTS
+
+爫 (zhao): claw
+冖 (mì): to cover
+友 (yǒu): friend;
+CHARACTERS WITH THE SAME PRONUNCIATION
+
+暧: (of daylight) dim; obscure; clandestine; dubious;
+碍: to hinder; to obstruct; to block;
+隘: pass; defile; narrow; confined; in distress;
+SENTENCES EXAMPLES WITH 爱
+
+对不起，我不爱你了，我就爱她！
+Duìbùqǐ, wǒ bù ài nǐle, wǒ jiù ài tā!
+妈妈，我爱你。
+Māmā, wǒ ài nǐ.
+我爱吃米饭。
+Wǒ ài chī mǐfàn.
+我很爱穿那件白衣服。
+Wǒ hěn ài chuān nà jiàn bái yīfú.
+我最爱唱歌了，我给你们唱一个。
+Wǒ zuì ài chànggēle, wǒ gěi nǐmen chàng yīgè."
             android:textSize="18sp"/>
 
         <View android:layout_width="match_parent"

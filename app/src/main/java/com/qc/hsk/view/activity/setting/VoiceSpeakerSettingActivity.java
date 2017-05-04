@@ -1,6 +1,5 @@
 package com.qc.hsk.view.activity.setting;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,7 +10,7 @@ import com.qc.hsk.R;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class SettingActivity extends BaseActivity {
+public class VoiceSpeakerSettingActivity extends BaseActivity {
 
     @Bind(R.id.voice_settings_id)
     public RelativeLayout voiceSettingView;
@@ -28,15 +27,10 @@ public class SettingActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.voice_settings_id:
-                gotoVoiceSpeakerSettingActivity();
                 break;
             default:
                 break;
         }
-    }
-
-    private void gotoVoiceSpeakerSettingActivity() {
-        startActivity(new Intent(this, VoiceSpeakerSettingActivity.class));
     }
 
     /**

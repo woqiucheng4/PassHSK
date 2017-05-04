@@ -22,8 +22,9 @@
                 android:id="@+id/textTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:textSize="22sp"
+                android:text="汉字"
                 android:textStyle="bold"/>
 
             <ImageView
@@ -40,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:text="pinyin"
             android:textSize="18sp"/>
         <TextView
             android:id="@+id/definitionTv"
@@ -48,6 +50,7 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="definition"
             android:textColor="@color/material_grey_600"
             android:textSize="18sp"/>
 

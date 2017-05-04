@@ -30,16 +30,15 @@ public class ToolBarManager {
     public ToolBarManager(AppCompatActivity context, Toolbar toolbar) {
         mContext = context;
         mToolbar = toolbar;
-        mToolbar.setTitle("");
+        mToolbar.setContentInsetStartWithNavigation(0);
         mContext.setSupportActionBar(mToolbar);
+        ActionBar actionBar = mContext.getSupportActionBar();
         mGravity = Gravity.LEFT;
-        ActionBar ab = mContext.getSupportActionBar();
-        ab.setHomeAsUpIndicator(android.R.drawable.ic_btn_speak_now);
-        ab.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void setTitleViewGravity(int gravity) {
-        mGravity=gravity;
+        mGravity = gravity;
     }
 
     /**
