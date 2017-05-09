@@ -3,6 +3,8 @@ package com.qc.corelibrary;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.qc.corelibrary.fresco.ImageLoaderConfig;
 import com.qc.corelibrary.utils.network.NetWorkChangeObserver;
 import com.qc.corelibrary.utils.network.NetWorkStateReceiver;
 import com.qc.corelibrary.utils.network.NetworkUtils;
@@ -32,6 +34,7 @@ public class BaseApplication extends Application {
         public void onConnect(NetworkUtils.NetType type) {
             super.onConnect(type);
             BaseApplication.this.onConnect(type);
+            Fresco.initialize(getApplicationContext(), ImageLoaderConfig.getImagePipelineConfig(getApplicationContext()));
         }
 
         @Override

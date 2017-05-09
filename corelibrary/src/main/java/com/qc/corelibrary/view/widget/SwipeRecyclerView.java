@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.qc.corelibrary.R;
 import com.qc.corelibrary.bean.Page;
 import com.qc.corelibrary.view.adapter.BaseAdapter;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -119,12 +119,11 @@ public class SwipeRecyclerView extends SwipeRefreshLayout implements SwipeRefres
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                final Picasso picasso = Picasso.with(finalContext);
                 //滑动不加载图片，停止滑动加载图片
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    picasso.resumeTag(finalContext);
+                    Fresco.getImagePipeline().resume();
                 } else {
-                    picasso.pauseTag(finalContext);
+                    Fresco .getImagePipeline().pause();
                 }
                 if (enableLoadMore && !isLoading && !isRefreshing && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == recyclerView.getAdapter().getItemCount()) {
                     isLoading = true;
