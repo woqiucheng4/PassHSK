@@ -17,10 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qc.corelibrary.R;
+import com.qc.corelibrary.fresco.FrescoUtil;
 import com.qc.corelibrary.utils.ActivitUtils;
 import com.qc.corelibrary.utils.PermissionUtils;
 import com.qc.corelibrary.utils.network.NetWorkStateReceiver;
@@ -61,7 +62,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     /**
      * 标题图片ImageView
      */
-    private ImageView mBackdrop;
+    //    private ImageView mBackdrop;
+    private SimpleDraweeView mBackdrop;
     /**
      * 抽屉栏DrawerLayout
      */
@@ -101,8 +103,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         mNetWorkStateReceiver = new NetWorkStateReceiver();
         rootView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_base, null);
         mToolbar = (Toolbar) rootView.findViewWithTag(TAG_TOOLBAR);
-        mBackdrop = (ImageView) rootView.findViewWithTag(TAG_BACKDROP);
-        mDrawerLayout=(DrawerLayout)rootView.findViewWithTag(TAG_DRAWER_LAYOUT);
+        mBackdrop = (SimpleDraweeView) rootView.findViewWithTag(TAG_BACKDROP);
+        //        mBackdrop = (ImageView) rootView.findViewWithTag(TAG_BACKDROP);
+        mDrawerLayout = (DrawerLayout) rootView.findViewWithTag(TAG_DRAWER_LAYOUT);
         setDrawerLayoutCanSlide(false);
         mNavigationView = (NavigationView) rootView.findViewWithTag(TAG_NAVIGATIONVIEW);
         mContentLayout = (FrameLayout) rootView.findViewWithTag(TAG_CONTENT_LAYOUT);
@@ -120,8 +123,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        View contentView = LayoutInflater.from(this).inflate(layoutResID, mContentLayout,true);
-//        mContentLayout.addView(contentView);
+        View contentView = LayoutInflater.from(this).inflate(layoutResID, mContentLayout, true);
+        //        mContentLayout.addView(contentView);
         setContentView(rootView);
         ButterKnife.bind(this, rootView);
         initToolbarView();
@@ -129,9 +132,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         initCustomView();
     }
 
-    public void setDrawerLayoutCanSlide(boolean canSlide){
-        if(mDrawerLayout!=null) {
-            mDrawerLayout.setDrawerLockMode(canSlide?DrawerLayout.LOCK_MODE_LOCKED_OPEN:DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    public void setDrawerLayoutCanSlide(boolean canSlide) {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.setDrawerLockMode(canSlide ? DrawerLayout.LOCK_MODE_LOCKED_OPEN : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 
@@ -243,15 +246,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     /**
      * 隐藏toolBar iamgeiView
      */
-    public void hideCollapsingTitleBarImageView() {
+    public void hideCollapsingTitleBarBackImageView() {
         mBackdrop.setVisibility(View.GONE);
     }
 
     /**
      * 显示toolBar ImageView
      */
-    public void showCollapsingTitleBarImageView() {
+    public void showCollapsingTitleBarBackImageView() {
         mBackdrop.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 设置图片toolBar ImageView
+     */
+    public void setCollapsingTitleBarBackImage(String url) {
+        FrescoUtil.loadImage(mBackdrop, url);
     }
 
     /**

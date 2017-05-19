@@ -7,6 +7,10 @@ dependencies {
 
 def javaVersion = JavaVersion.VERSION_1_7
 
+def buildTime() {
+    return new Date().format("yyyy_MM_dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.0'
@@ -44,14 +48,14 @@ android {
         }
     }
 
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'x86', 'armeabi-v7a'
-            universalApk true
-        }
-    }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'x86', 'armeabi-v7a'
+//            universalApk true
+//        }
+//    }
     defaultConfig {
         applicationId "com.qc.hsk"
         minSdkVersion 18
@@ -68,13 +72,26 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "LOG_DEBUG", "false"
-
+            //只针对release版本进行配置
+            applicationVariants.all {
+                variant ->
+                    variant.outputs.each {
+                        output ->
+                            def outputFile = output.outputFile
+                            if (outputFile != null && outputFile.name.endsWith('.apk') && 'release'.equals(variant.buildType.name)) {
+                                // 输出apk格式命名如：Gradle_v1.0_2016_07_01_wandoujia.apk
+                                def fileName = "Gradl_v${variant.versionName}_${buildTime()}_${variant.flavorName}.apk"
+                                output.outputFile = new File(outputFile.parent, fileName)
+                            }
+                    }
+            }
         }
         debug {
             debuggable true
             minifyEnabled false
             signingConfig signingConfigs.debug
             buildConfigField "boolean", "LOG_DEBUG", "true"
+            applicationIdSuffix ".debug"
 
         }
     }
@@ -83,5 +100,26 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    productFlavors {
+        wandoujia {}
+        xiaomi {}
+//        _360 {}
+        //...
+    }
+
+    productFlavors.all {
+            //批量修改，类似一个循序遍历
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
 }
+
+
 

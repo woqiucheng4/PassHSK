@@ -22,6 +22,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initApplication();
+        Fresco.initialize(getApplicationContext(), ImageLoaderConfig.getImagePipelineConfig(getApplicationContext()));
     }
 
     private void initApplication() {
@@ -34,7 +35,7 @@ public class BaseApplication extends Application {
         public void onConnect(NetworkUtils.NetType type) {
             super.onConnect(type);
             BaseApplication.this.onConnect(type);
-            Fresco.initialize(getApplicationContext(), ImageLoaderConfig.getImagePipelineConfig(getApplicationContext()));
+
         }
 
         @Override

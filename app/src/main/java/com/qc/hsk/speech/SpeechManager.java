@@ -2,6 +2,7 @@ package com.qc.hsk.speech;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
@@ -104,10 +105,12 @@ public class SpeechManager implements SpeechSynthesizerListener {
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOCODER_OPTIM_LEVEL, "0");
         // 初始化语音合成器
         mSpeechSynthesizer.initTts(TtsMode.MIX);
+
     }
 
     @Override
     public void onSynthesizeStart(String s) {
+        Log.i("nnn","onSynthesizeStart");
         // 监听到合成开始，在此添加相关操作
     }
 
@@ -124,6 +127,7 @@ public class SpeechManager implements SpeechSynthesizerListener {
     @Override
     public void onSpeechStart(String s) {
         // 监听到合成并播放开始，在此添加相关操作
+        Log.i("nnn","onSpeechStart");
     }
 
     @Override
@@ -139,6 +143,7 @@ public class SpeechManager implements SpeechSynthesizerListener {
     @Override
     public void onError(String s, SpeechError speechError) {
         // 监听到出错，在此添加相关操作
+        Log.i("nnn","speechError=="+speechError.description);
     }
 
     public int speak(String str) {

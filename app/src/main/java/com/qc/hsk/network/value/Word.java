@@ -2,7 +2,7 @@ package com.qc.hsk.network.value;
 
 import java.io.Serializable;
 
-public class Character implements Serializable {
+public class Word implements Serializable {
 
     private static final long serialVersionUID = 1390892342542L;
 

@@ -11,17 +11,17 @@ import java.util.List;
  * @author chengqiu
  * @date 2016-11-10
  */
-public class CharacterList implements Serializable {
+public class WordList implements Serializable {
 
     private static final long serialVersionUID = 135634422542L;
 
-    private List<Character> characterList;
+    private List<Word> characterList;
 
-    public List<Character> getCharacterList() {
+    public List<Word> getCharacterList() {
         return characterList;
     }
 
-    public void setCharacterList(List<Character> characterList) {
+    public void setCharacterList(List<Word> characterList) {
         this.characterList = characterList;
     }
 

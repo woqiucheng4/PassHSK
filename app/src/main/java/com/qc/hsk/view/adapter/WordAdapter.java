@@ -8,7 +8,8 @@ import com.qc.corelibrary.view.adapter.BaseAdapter;
 import com.qc.corelibrary.view.adapter.OnItemClickListener;
 import com.qc.corelibrary.view.adapter.viewholder.BaseViewHolder;
 import com.qc.hsk.R;
-import com.qc.hsk.network.value.Character;
+import com.qc.hsk.constants.Constants;
+import com.qc.hsk.network.value.Word;
 import com.qc.hsk.view.activity.word.WordDetailActivity;
 import com.qc.hsk.view.adapter.viewholder.ItemSingleViewHolder;
 
@@ -23,15 +24,16 @@ import java.util.List;
  * @author chengqiu
  * @date 2016-08-26
  */
-public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> implements OnItemClickListener {
+public class WordAdapter extends BaseAdapter<Word, ItemSingleViewHolder> implements OnItemClickListener {
 
     private OnSpeekListener speekListener;
 
+
     private Context mContext;
 
-    public WordAdapter(Context context, List<Character> list) {
+    public WordAdapter(Context context, List<Word> list) {
         super(context, list);
-        mContext=context;
+        mContext = context;
         speekListener = (OnSpeekListener) context;
     }
 
@@ -65,7 +67,7 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
      * @param item   The item that needs to be displayed.
      */
     @Override
-    public void convert(ItemSingleViewHolder holder, Character item) {
+    public void convert(ItemSingleViewHolder holder, Word item) {
         final ItemSingleViewHolder itemHolder = holder;
         itemHolder.textView.setText(item.getCharacterName());
         itemHolder.pinyinTv.setText(item.getPinyin());
@@ -94,6 +96,7 @@ public class WordAdapter extends BaseAdapter<Character, ItemSingleViewHolder> im
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(mContext, WordDetailActivity.class);
+        intent.putExtra(Constants.IntentBundleKey.WOORD_DETAIL, getItem(position));
         mContext.startActivity(intent);
     }
 

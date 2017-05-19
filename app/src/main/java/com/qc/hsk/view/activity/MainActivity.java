@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -15,8 +16,10 @@ import com.qc.corelibrary.utils.PermissionUtils;
 import com.qc.corelibrary.view.BaseActivity;
 import com.qc.corelibrary.view.widget.SwipeRecyclerView;
 import com.qc.hsk.R;
-import com.qc.hsk.network.bean.CharacterListBean;
-import com.qc.hsk.network.value.Character;
+import com.qc.hsk.network.bean.WordListBean;
+import com.qc.hsk.network.value.Sentence;
+import com.qc.hsk.network.value.Word;
+import com.qc.hsk.network.value.WordDetail;
 import com.qc.hsk.speech.SpeechManager;
 import com.qc.hsk.utils.FileUtils;
 import com.qc.hsk.view.activity.about.AboutUsActivity;
@@ -32,14 +35,16 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements SwipeRecyclerView.RefreshLoadMoreListener, WordAdapter.OnSpeekListener {
 
     private static final String WORD_LIST_NAME = "word_json.txt";
+    private static final String WORD_DETAIL_LIST_NAME = "word_detail.txt";
 
     private String sdCardWordPath;
+    private String sdCardWordDetailPath;
 
     private SpeechManager speechManager;
 
     private SwipeRecyclerView mSwipeRecyclerView;
 
-    private List<Character> list = new ArrayList<>();
+    private List<Word> list = new ArrayList<>();
 
     private WordAdapter adapter;
 
@@ -94,7 +99,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
                         gotoSettingActivity();
                         break;
                 }
-                menuItem.setChecked(true);
+                //                menuItem.setChecked(true);
                 closeDrawerLayout();
                 return true;
             }
@@ -137,10 +142,68 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
      */
     private void requestHSKCharacters() {
         String jsonWord = FileUtils.readFile(sdCardWordPath, "utf-8").toString();
-        CharacterListBean characterListBean = JSON.parseObject(jsonWord, CharacterListBean.class);
+        WordListBean characterListBean = JSON.parseObject(jsonWord, WordListBean.class);
         if (characterListBean != null && characterListBean.getValue() != null)
             list.addAll(characterListBean.getValue().getCharacterList());
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 请求单词详情列表
+     *
+     * @throws Exception
+     */
+    private void requestHSKCharactersDetail() {
+        String jsonWordDetail = FileUtils.readFile(sdCardWordDetailPath, "utf-8").toString();
+        String[] arrays = jsonWordDetail.split("#");
+        int componentsIndex = 0;
+        int sentencesIndex = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            String word = arrays[i];
+            if (i == 0) {
+                WordDetail wordDetail = new WordDetail();
+                List<String> englishList = new ArrayList<>();
+                List<String> componentsList = new ArrayList<>();
+                List<Sentence> sentencesList = new ArrayList<>();
+                wordDetail.setEnglish(englishList);
+                wordDetail.setComponents(componentsList);
+                wordDetail.setSentences(sentencesList);
+                String[] wordArray = word.split("\n");
+                for (int j = 0; j < wordArray.length; j++) {
+                    if (wordArray[j].contains("Components")) {
+                        componentsIndex = j;
+                    }
+                    if (wordArray[j].contains("Sentences")) {
+                        sentencesIndex = j;
+                    }
+                }
+                Sentence sentence=null;
+                for (int k = 0; k < wordArray.length; k++) {
+                    if (k == 0) {
+                        wordDetail.setCharacterName(wordArray[k]);
+                    }
+                    if (k == 1) {
+                        wordDetail.setPinyin(wordArray[k]);
+                    }
+                    if (k > 1 && k < componentsIndex) {
+                        englishList.add(wordArray[k]);
+                    }
+                    if (k > componentsIndex && k < sentencesIndex) {
+                        componentsList.add(wordArray[k]);
+                    }
+                    if (k > sentencesIndex) {
+                        if((k-sentencesIndex)%2!=0){
+                            sentence=new Sentence();
+                            sentence.setHanyu(wordArray[k]);
+                        }else{
+                            sentence.setHanyupinyin(wordArray[k]);
+                        }
+                        sentencesList.add(sentence);
+                    }
+                }
+                Log.i("nnn","detail=="+wordDetail.toString());
+            }
+        }
     }
 
 
@@ -156,7 +219,13 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
     @Override
     public void onSpeek(ItemSingleViewHolder itemHolder) {
         String context = itemHolder.textView.getText().toString();
-        speechManager.speak(context);
+
+        int result = speechManager.speak(context);
+        if (result < 0) {
+            Log.i("nnn", "error,please look up error code in doc or URL:http://yuyin.baidu.com/docs/tts/122 ");
+        } else {
+            Log.i("nnn", "result==" + result);
+        }
     }
 
     @Override
@@ -164,9 +233,12 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
         switch (requestCode) {
             case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
                 sdCardWordPath = Environment.getExternalStorageDirectory() + File.separator + WORD_LIST_NAME;
+                sdCardWordDetailPath = Environment.getExternalStorageDirectory() + File.separator + WORD_DETAIL_LIST_NAME;
                 FileUtils.copyFromAssetsToSdcard(this, true, WORD_LIST_NAME, sdCardWordPath);
+                FileUtils.copyFromAssetsToSdcard(this, true, WORD_DETAIL_LIST_NAME, sdCardWordDetailPath);
                 speechManager = new SpeechManager(this);
                 requestHSKCharacters();
+                requestHSKCharactersDetail();
                 break;
             default:
                 break;

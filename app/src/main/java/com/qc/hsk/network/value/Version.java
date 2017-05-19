@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Version implements Serializable {
 
-    private static final long serialVersionUID = 1345432342542L;
+    private static final long serialVersionUID = 1345432902542L;
 
     private String os; //操作系统 1代表ios，2代表android
 

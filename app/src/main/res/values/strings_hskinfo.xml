@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hskinfo_content">
+        &#160; &#160;汉语水平考试（HSK）是一项国际标准化考试，重点考查汉语非第一语言的考生在生活、学习和工作中运用汉语进行交际的能力。\n
+        &#160; &#160;考试等级包括HSK（一级）、HSK（二级）、HSK（三级）、HSK（四级）、HSK（五级）和HSK（六级）。\n
+        &#160; &#160; Chinese Proficiency Test (HSK), an international standardized test of Chinese language
+        proficiency,assesses non-native Chinese speakers’ abilities in using the Chinese language in their daily,
+        academic and professional lives.\n
+        &#160; &#160; HSK consists of six levels, namely HSK (level I), HSK (level II), HSK (level III), HSK (level IV),
+        HSK(level V), and HSK (level VI).\n
+    </string>
+</resources>

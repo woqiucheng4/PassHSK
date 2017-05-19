@@ -3,56 +3,73 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-    >
+        android:paddingTop="1px">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:lineSpacingExtra="5dp"
-            android:text="ài volume_down
-to love
-affection
-to be fond of
-to like
-HSK LEVELS
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="爱 in English"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="to love\naffection\nto be fond of\nto like"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Components"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="爫 (zhao): claw\n冖 (mì): to cover\n友 (yǒu): friend;"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="Sentences examples with 爱"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="对不起，我不爱你了，我爱她！\nDuìbùqǐ, wǒ bù ài nǐle, wǒ ài tā!\n妈妈，我爱你。\nMāmā, wǒ ài nǐ.\n我爱吃米饭。\nWǒ ài chī mǐfàn.\n我很爱穿那件白衣服。\n Wǒ hěn ài chuān nà jiàn bái yīfú.\n我最爱唱歌了，我给你们唱一个。\nWǒ zuì ài chànggēle, wǒ gěi nǐmen chàng yīgè.\n"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-HSK 1
-HSK 3
-HSK 4
-HSK 5
-HSK 6
-COMPONENTS
+    <View android:layout_width="match_parent"
+          android:layout_height="200dp"></View>
 
-爫 (zhao): claw
-冖 (mì): to cover
-友 (yǒu): friend;
-CHARACTERS WITH THE SAME PRONUNCIATION
 
-暧: (of daylight) dim; obscure; clandestine; dubious;
-碍: to hinder; to obstruct; to block;
-隘: pass; defile; narrow; confined; in distress;
-SENTENCES EXAMPLES WITH 爱
-
-对不起，我不爱你了，我就爱她！
-Duìbùqǐ, wǒ bù ài nǐle, wǒ jiù ài tā!
-妈妈，我爱你。
-Māmā, wǒ ài nǐ.
-我爱吃米饭。
-Wǒ ài chī mǐfàn.
-我很爱穿那件白衣服。
-Wǒ hěn ài chuān nà jiàn bái yīfú.
-我最爱唱歌了，我给你们唱一个。
-Wǒ zuì ài chànggēle, wǒ gěi nǐmen chàng yīgè."
-            android:textSize="18sp"/>
-
-        <View android:layout_width="match_parent"
-              android:layout_height="200dp"></View>
-
-    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
