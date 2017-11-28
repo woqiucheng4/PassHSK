@@ -91,7 +91,6 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.debug
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            applicationIdSuffix ".debug"
 
         }
     }

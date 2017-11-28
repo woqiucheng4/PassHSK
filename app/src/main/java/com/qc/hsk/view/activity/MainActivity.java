@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
@@ -32,6 +34,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.qc.hsk.baiduTTS.MainHandlerConstant.PRINT;
+import static com.qc.hsk.baiduTTS.MainHandlerConstant.UI_CHANGE_INPUT_TEXT_SELECTION;
+import static com.qc.hsk.baiduTTS.MainHandlerConstant.UI_CHANGE_SYNTHES_TEXT_SELECTION;
+
 public class MainActivity extends BaseActivity implements SwipeRecyclerView.RefreshLoadMoreListener, WordAdapter.OnSpeekListener {
 
     private static final String WORD_LIST_NAME = "word_json.txt";
@@ -48,12 +54,26 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
 
     private WordAdapter adapter;
 
+    protected Handler mainHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitleText(R.string.app_name);
+        mainHandler = new Handler() {
+            /*
+             * @param msg
+             */
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                handle(msg);
+            }
+
+        };
+        speechManager = new SpeechManager(this,mainHandler);
     }
 
     @Override
@@ -105,6 +125,20 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
             }
         });
     }
+    protected void handle(Message msg) {
+    int what = msg.what;
+        switch (what) {
+        case PRINT:
+            Log.e("nnn", (String) msg.obj);
+            break;
+        case UI_CHANGE_INPUT_TEXT_SELECTION:
+            break;
+        case UI_CHANGE_SYNTHES_TEXT_SELECTION:
+            break;
+        default:
+            break;
+    }
+}
 
     private void gotoHSKInfoActivity() {
         startActivity(new Intent(this, HSKInfoActivity.class));
@@ -219,7 +253,6 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
     @Override
     public void onSpeek(ItemSingleViewHolder itemHolder) {
         String context = itemHolder.textView.getText().toString();
-
         int result = speechManager.speak(context);
         if (result < 0) {
             Log.i("nnn", "error,please look up error code in doc or URL:http://yuyin.baidu.com/docs/tts/122 ");
@@ -234,9 +267,7 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
             case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
                 sdCardWordPath = Environment.getExternalStorageDirectory() + File.separator + WORD_LIST_NAME;
                 sdCardWordDetailPath = Environment.getExternalStorageDirectory() + File.separator + WORD_DETAIL_LIST_NAME;
-                FileUtils.copyFromAssetsToSdcard(this, true, WORD_LIST_NAME, sdCardWordPath);
                 FileUtils.copyFromAssetsToSdcard(this, true, WORD_DETAIL_LIST_NAME, sdCardWordDetailPath);
-                speechManager = new SpeechManager(this);
                 requestHSKCharacters();
                 requestHSKCharactersDetail();
                 break;

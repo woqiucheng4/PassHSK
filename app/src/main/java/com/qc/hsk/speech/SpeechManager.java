@@ -1,19 +1,21 @@
 package com.qc.hsk.speech;
 
 import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
+import android.os.Handler;
 
-import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
+import com.qc.hsk.baiduTTS.MainHandlerConstant;
+import com.qc.hsk.baiduTTS.control.InitConfig;
+import com.qc.hsk.baiduTTS.control.MySyntherizer;
+import com.qc.hsk.baiduTTS.control.NonBlockSyntherizer;
+import com.qc.hsk.baiduTTS.listener.UiMessageListener;
+import com.qc.hsk.baiduTTS.utils.OfflineResource;
+import com.qc.hsk.constants.Constants;
 
-import static com.baidu.tts.client.SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85;
-import static com.baidu.tts.client.SpeechSynthesizer.AUDIO_ENCODE_AMR;
-import static com.baidu.tts.client.SpeechSynthesizer.MIX_MODE_DEFAULT;
-import static com.qc.hsk.utils.FileUtils.copyFromAssetsToSdcard;
-import static com.qc.hsk.utils.FileUtils.makeDir;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <ul>
@@ -23,136 +25,85 @@ import static com.qc.hsk.utils.FileUtils.makeDir;
  * @author chengqiu
  * @date 2016-11-18
  */
-public class SpeechManager implements SpeechSynthesizerListener {
+public class SpeechManager implements MainHandlerConstant {
 
-    private static final String BAIDU_SPEECH_APPID = "8876475";
-    private static final String BAIDU_SPEECH_APP_KEY = "UHDbLtGHjKc4aztGs7B9S8Xw";
-    private static final String BAIDU_SPEECH_SECRET_KEY = "f3421791936c81737a9af280dc3431c9";
+    // TtsMode.MIX; 离在线融合，在线优先； TtsMode.ONLINE 纯在线； 没有纯离线
+    private TtsMode ttsMode = TtsMode.MIX;
 
-    private static final String SAMPLE_DIR_NAME = "hskTTS";
-    private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
-    private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
-    private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+    // 离线发音选择，VOICE_FEMALE即为离线女声发音。
+    // assets目录下bd_etts_speech_female.data为离线男声模型；bd_etts_speech_female.data为离线女声模型
+    private String offlineVoice = OfflineResource.VOICE_MALE;
 
-    private static final String SPEECH_PARAM_VOLUME_DEfAUlT = "5";//中级音量，范围[ 0- 9]
-    private static final String SPEECH_PARAM_SPEED_DEfAUlT = "0";// 中速，范围[ 0- 9]
-    private static final String SPEECH_PARAM_PITCH_DEfAUlT = "5";//中调，范围[ 0- 9]
-    private static final String SPEECH_PARAM_SPEAKER_DEfAUlT = "0"; //0 (普通女声),1 (普通男声),2 (特别男声),3 (情感男声)
-
+    // 主控制类，所有合成控制方法从这个类开始
+    private MySyntherizer synthesizer;
 
     private Context mContext;
+    private Handler mainHandler;
 
-    // 语音合成客户端
-    private SpeechSynthesizer mSpeechSynthesizer;
-
-    private String mSampleDirPath;
-
-    public SpeechManager(Context context) {
+    public SpeechManager(Context context, Handler handler) {
         mContext = context;
+        mainHandler = handler;
         initSpeechSynthesizer();
     }
 
     private void initSpeechSynthesizer() {
-        initialEnv();
-        startTTS();
+        initialTts();
     }
 
     /**
-     * 复制文件到SD卡
+     * 初始化引擎，需要的参数均在InitConfig类里
+     * <p>
+     * DEMO中提供了3个SpeechSynthesizerListener的实现
+     * MessageListener 仅仅用log.i记录日志，在logcat中可以看见
+     * UiMessageListener 在MessageListener的基础上，对handler发送消息，实现UI的文字更新
+     * FileSaveListener 在UiMessageListener的基础上，使用 onSynthesizeDataArrived回调，获取音频流
      */
-    private void initialEnv() {
-        if (mSampleDirPath == null) {
-            String sdcardPath = Environment.getExternalStorageDirectory().toString();
-            mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
-        }
-        makeDir(mSampleDirPath);
-        copyFromAssetsToSdcard(mContext, false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
-        copyFromAssetsToSdcard(mContext, false, SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/" + SPEECH_MALE_MODEL_NAME);
-        copyFromAssetsToSdcard(mContext, false, TEXT_MODEL_NAME, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+    protected void initialTts() {
+        // 设置初始化参数
+        SpeechSynthesizerListener listener = new UiMessageListener(mainHandler); // 此处可以改为 含有您业务逻辑的SpeechSynthesizerListener的实现类
+        Map<String, String> params = getParams();
+        // appId appKey secretKey 网站上您申请的应用获取。注意使用离线合成功能的话，需要应用中填写您app的包名。包名在build.gradle中获取。
+        InitConfig initConfig = new InitConfig(Constants.APPID, Constants.APP_KEY, Constants.SECRET_KEY,//
+                ttsMode, offlineVoice, params, listener);
+        synthesizer = new NonBlockSyntherizer(mContext, initConfig, mainHandler);
     }
 
-    // 初始化语音合成客户端并启动
-    private void startTTS() {
-        // 获取语音合成对象实例
-        mSpeechSynthesizer = SpeechSynthesizer.getInstance();
-        // 设置context
-        mSpeechSynthesizer.setContext(mContext);
-        // 设置语音合成状态监听器
-        mSpeechSynthesizer.setSpeechSynthesizerListener(this);
-        // 语音开发者平台上注册应用得到的App ID (离线授权)
-        mSpeechSynthesizer.setAppId(BAIDU_SPEECH_APPID);
-        // 语音开发者平台注册应用得到的apikey和secretkey (在线授权)
-        mSpeechSynthesizer.setApiKey(BAIDU_SPEECH_APP_KEY, BAIDU_SPEECH_SECRET_KEY);
-        // 文本模型文件路径 (离线引擎使用)
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
-        // 声学模型文件路径 (离线引擎使用)
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
-        //中级音量，范围[ 0- 9]
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, SPEECH_PARAM_VOLUME_DEfAUlT);
-        //中速，范围[ 0- 9]
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, SPEECH_PARAM_SPEED_DEfAUlT);
-        //中调，范围[ 0- 9]
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, SPEECH_PARAM_PITCH_DEfAUlT);
-        //0 (普通女声),1 (普通男声),2 (特别男声),3 (情感男声)
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, SPEECH_PARAM_SPEAKER_DEfAUlT);
-        //合成模式
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, MIX_MODE_DEFAULT);
-        //在线合成参数
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE, AUDIO_ENCODE_AMR);
-        //在线合成参数
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE, AUDIO_BITRATE_AMR_15K85);
-        //离线合成参数
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOCODER_OPTIM_LEVEL, "0");
-        // 初始化语音合成器
-        mSpeechSynthesizer.initTts(TtsMode.MIX);
-
+    /**
+     * 合成的参数，可以初始化时填写，也可以在合成前设置。
+     *
+     * @return
+     */
+    protected Map<String, String> getParams() {
+        Map<String, String> params = new HashMap<String, String>();
+        // 以下参数均为选填
+        params.put(SpeechSynthesizer.PARAM_SPEAKER, "0"); // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
+        params.put(SpeechSynthesizer.PARAM_VOLUME, "5"); // 设置合成的音量，0-9 ，默认 5
+        params.put(SpeechSynthesizer.PARAM_SPEED, "5");// 设置合成的语速，0-9 ，默认 5
+        params.put(SpeechSynthesizer.PARAM_PITCH, "5");// 设置合成的语调，0-9 ，默认 5
+        params.put(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);         // 该参数设置为TtsMode.MIX生效。即纯在线模式不生效。
+        // MIX_MODE_DEFAULT 默认 ，wifi状态下使用在线，非wifi离线。在线状态下，请求超时6s自动转离线
+        // MIX_MODE_HIGH_SPEED_SYNTHESIZE_WIFI wifi状态下使用在线，非wifi离线。在线状态下， 请求超时1.2s自动转离线
+        // MIX_MODE_HIGH_SPEED_NETWORK ， 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
+        // MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
+        return params;
     }
 
-    @Override
-    public void onSynthesizeStart(String s) {
-        Log.i("nnn","onSynthesizeStart");
-        // 监听到合成开始，在此添加相关操作
+    /**
+     * 合成并播放
+     *
+     * @param text 小于1024 GBK字节，即512个汉字或者字母数字
+     * @return
+     */
+    public int speak(String text) {
+        return synthesizer.speak(text);
     }
 
-    @Override
-    public void onSynthesizeDataArrived(String s, byte[] bytes, int i) {
-        // 监听到有合成数据到达，在此添加相关操作
-    }
+    /**
+     * 释放资源
+     */
+    public void release() {
+        synthesizer.release();
 
-    @Override
-    public void onSynthesizeFinish(String s) {
-        // 监听到合成结束，在此添加相关操作
-    }
-
-    @Override
-    public void onSpeechStart(String s) {
-        // 监听到合成并播放开始，在此添加相关操作
-        Log.i("nnn","onSpeechStart");
-    }
-
-    @Override
-    public void onSpeechProgressChanged(String s, int i) {
-        // 监听到播放进度有变化，在此添加相关操作
-    }
-
-    @Override
-    public void onSpeechFinish(String s) {
-        // 监听到播放结束，在此添加相关操作
-    }
-
-    @Override
-    public void onError(String s, SpeechError speechError) {
-        // 监听到出错，在此添加相关操作
-        Log.i("nnn","speechError=="+speechError.description);
-    }
-
-    public int speak(String str) {
-        if (mSpeechSynthesizer != null) return mSpeechSynthesizer.speak(str);
-        return -1000;
-    }
-
-    public SpeechSynthesizer getSpeechSynthesizer() {
-        return mSpeechSynthesizer;
     }
 
 }

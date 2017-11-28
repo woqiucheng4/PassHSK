@@ -4,15 +4,31 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.widget.TextView;
 
 import com.qc.corelibrary.view.BaseActivity;
 import com.qc.hsk.R;
 import com.qc.hsk.constants.Constants;
+import com.qc.hsk.network.value.Sentence;
 import com.qc.hsk.network.value.Word;
+import com.qc.hsk.network.value.WordDetail;
+
+import butterknife.Bind;
 
 public class WordDetailActivity extends BaseActivity {
 
+    @Bind(R.id.in_english_name_id)
+    public TextView englishName;
+    @Bind(R.id.in_english_value_id)
+    public TextView englishValue;
+    @Bind(R.id.sentences_name_id)
+    public TextView sentencesName;
+    @Bind(R.id.sentences_value_id)
+    public TextView sentencesValue;
+
     private Word mWord;
+
+    private WordDetail wordDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +48,9 @@ public class WordDetailActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         if (intent != null) {
-            mWord= (Word) intent.getSerializableExtra(Constants.IntentBundleKey.WOORD_DETAIL);
+            mWord = (Word) intent.getSerializableExtra(Constants.IntentBundleKey.WOORD_DETAIL);
         }
+        wordDetail = new WordDetail();
     }
 
     /**
@@ -42,5 +59,46 @@ public class WordDetailActivity extends BaseActivity {
     @Override
     protected void initCustomView() {
 
+
     }
+
+
+
+    private void refreshView() {
+        //
+        englishName.setText(wordDetail.getCharacterName() + "in English");
+        englishValue.setText(getEnglishDefinition());
+        //
+        sentencesName.setText("Sentences examples with " + wordDetail.getCharacterName());
+        sentencesValue.setText(getSentences());
+    }
+
+    private String getEnglishDefinition() {
+        StringBuilder englishSb = new StringBuilder();
+        int length = wordDetail.getEnglish().size();
+        for (int i = 0; i < length; i++) {
+            if (i == length - 1) {
+                englishSb.append(wordDetail.getEnglish().get(i));
+            } else {
+                englishSb.append(wordDetail.getEnglish().get(i) + "\n");
+            }
+        }
+        return englishSb.toString();
+    }
+
+
+    private String getSentences() {
+        StringBuilder sentenceSb = new StringBuilder();
+        int length = wordDetail.getSentences().size();
+        for (int i = 0; i < length; i++) {
+            Sentence sentence = wordDetail.getSentences().get(i);
+            if (i == length - 1) {
+                sentenceSb.append(sentence.getHanyu() + "\n" + sentence.getHanyupinyin());
+            } else {
+                sentenceSb.append(sentence.getHanyu() + "\n" + sentence.getHanyupinyin() + "\n");
+            }
+        }
+        return sentenceSb.toString();
+    }
+
 }
