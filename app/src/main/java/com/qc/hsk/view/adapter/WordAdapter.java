@@ -109,6 +109,5 @@ public class WordAdapter extends BaseAdapter<Word, ItemSingleViewHolder> impleme
 
     }
 
-
 }
 

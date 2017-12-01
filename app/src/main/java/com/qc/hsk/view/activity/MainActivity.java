@@ -267,9 +267,9 @@ public class MainActivity extends BaseActivity implements SwipeRecyclerView.Refr
             case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
                 sdCardWordPath = Environment.getExternalStorageDirectory() + File.separator + WORD_LIST_NAME;
                 sdCardWordDetailPath = Environment.getExternalStorageDirectory() + File.separator + WORD_DETAIL_LIST_NAME;
+                FileUtils.copyFromAssetsToSdcard(this, true, WORD_LIST_NAME, sdCardWordPath);
                 FileUtils.copyFromAssetsToSdcard(this, true, WORD_DETAIL_LIST_NAME, sdCardWordDetailPath);
                 requestHSKCharacters();
-                requestHSKCharactersDetail();
                 break;
             default:
                 break;
