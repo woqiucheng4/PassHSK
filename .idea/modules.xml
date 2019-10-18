@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HSK.iml" filepath="$PROJECT_DIR$/HSK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PassHSK.iml" filepath="$PROJECT_DIR$/PassHSK.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/corelibrary/corelibrary.iml" filepath="$PROJECT_DIR$/corelibrary/corelibrary.iml" />
     </modules>
